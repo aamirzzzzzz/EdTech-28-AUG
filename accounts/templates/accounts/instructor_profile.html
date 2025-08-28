@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Instructor Profile: {{ instructor.username }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-3 text-center">
+                    <img src="{{ instructor.get_profile_photo_url }}"
+                         class="rounded-circle mb-3"
+                         width="150" height="150" alt="Profile Photo">
+                </div>
+                <div class="col-md-9">
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Name:</strong></div>
+                        <div class="col-md-8">{{ instructor.name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Email:</strong></div>
+                        <div class="col-md-8">{{ instructor.email }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Contact:</strong></div>
+                        <div class="col-md-8">{{ instructor.contact }}</div>
+                    </div>
+                    {% if instructor_profile %}
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Organization:</strong></div>
+                        <div class="col-md-8">{{ instructor_profile.organization_name|default:"N/A" }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr>
+            <h4>Courses Taught by {{ instructor.name }}</h4>
+            {% if courses %}
+                <div class="list-group">
+                    {% for course in courses %}
+                        <a href="{% url 'course_detail' course.id %}" class="list-group-item list-group-item-action">
+                            {{ course.title }} ({{ course.category }}) - ₹{{ course.price }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>This instructor has not posted any courses yet.</p>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}
