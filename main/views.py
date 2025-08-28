@@ -9,3 +9,6 @@ def home(request):
     else:
         courses = Course.objects.all()[:3] 
         return render(request, 'main/home.html', {'courses': courses})
+    
+def about_us(request):
+    return render(request, 'main/about_us.html')
