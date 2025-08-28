@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container my-5">
+    <div class="hero-section bg-light p-5 rounded-3 mb-5">
+        <h1>Welcome back, {{ user.username }}!</h1>
+        <p class="lead">Explore new courses or manage your existing ones.</p>
+        {% if user.user_type == 'S' %}
+            <a href="{% url 'course_list' %}" class="btn btn-primary btn-lg">Browse All Courses</a>
+        {% elif user.user_type == 'I' %}
+            <a href="{% url 'my_courses' %}" class="btn btn-primary btn-lg">Manage My Courses</a>
+        {% endif %}
+    </div>
+
+    <h2 class="mb-4">All Available Courses</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for course in courses %}
+        <div class="col">
+            <div class="card h-100">
+                {% if course.image %}
+                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                {% else %}
+                <div class="card-img-top bg-secondary text-white p-5 text-center">No Image</div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description|truncatechars:100 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">By <a href="{% url 'instructor_profile' course.instructor.id %}">{{ course.instructor.username }}</a></small>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No courses available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
